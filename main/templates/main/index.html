@@ -1,0 +1,108 @@
+{% extends "main/layout.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="container-fluid thin center-text">
+  <h1>I am feeling...</h1>
+</div>
+
+<div class="container-fluid thick bg-2">
+  <form action="" method="post">
+
+    {% csrf_token %}
+    <div class="row text30 center-text">
+      <div class="col-sm-3">
+      </div>
+      <div class="col-sm-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Shopaholic" name="checks" id="1">
+          <label class="form-check-label" for="1">
+            Shopaholic
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Everything" name="checks" id="2">
+          <label class="form-check-label" for="2">
+            Everything
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Foodie" name="checks" id="5">
+          <label class="form-check-label" for="5">
+            Foodie
+          </label>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Touristy" name="checks" id="3">
+          <label class="form-check-label" for="3">
+            Touristy
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Outdoor" name="checks" id="4">
+          <label class="form-check-label" for="4">
+            Outdoor
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Chill" name="checks" id="6">
+          <label class="form-check-label" for="6">
+            Chill
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-3">
+      </div>
+    </div>
+
+    <div class="container-fluid center-text">
+      <h2>I am in <input type="text" name="myCountry" id="transparent" required></h2>
+    </div>
+
+    <div class="center-text">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary ">Take me somewhere</button>
+    </div>
+  </form>
+</div>
+
+<div class="container">
+  <div class="row">
+    <h1>You tell us how you feel, we tell you where to go.</h1>
+  </div>
+  <div class="row thick bg-1">
+    <div class="col-sm-4 center-text">
+      <img src=".././static/images/emotions.png" alt="emotions.png">
+      <br>
+      image 1 - tell us how u feel
+    </div>
+    <div class="col-sm-4 center-text">
+      <img src=".././static/images/calendar.png" alt="calendar.png">
+      <img src=".././static/images/wallet.png" alt="wallet.png">
+      <br>
+      image 2 - choose your availability and budget
+    </div>
+    <div class="col-sm-4 center-text">
+      <img src=".././static/images/choice.jpg" alt="choice.jpg">
+      <br>
+      image 3 - see your best option
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid thick center-text">
+  MORE INFO
+</div>
+
+<div class="container-fluid thick center-text">
+  MORE MORE INFO
+</div>
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}

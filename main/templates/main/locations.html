@@ -1,0 +1,59 @@
+{% extends "main/layout.html" %}
+
+{% block title %} Locations {% endblock %}
+
+{% block content %}
+<h1>Display the locations with some jinja</h1>
+
+<form>
+  <div class="container-fluid thin center-text">
+    <h1>How much £</h1>
+  </div>
+  <div class="slidecontainer thin center-text">
+    <input type="range" min="0" max="100" step="5" value="50" class="slider" id="myRange">
+  </div>
+
+  <div class="container center-text">
+    <text>£</text>
+    <text id="demo"></text>
+  </div>
+
+  <div class="container thin center-text">
+    <h1>When?</h1>
+  </div>
+
+  <div class="container center-text thick text30">
+    <input type="text" name="daterange" value="01/01/2019 - 01/15/2019" id="dateselect"/>
+
+    <script>
+    $(function() {
+      $('input[name="daterange"]').daterangepicker({
+        opens: 'left'
+      }, function(start, end, label) {
+        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+      });
+    });
+    </script>
+  </div>
+
+  </div>
+</form>
+
+<div class="center-text">
+  <button type="submit" class="btn btn-primary center-text">Go!</button>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  var slider = document.getElementById("myRange");
+  var output = document.getElementById("demo");
+  output.innerHTML = slider.value; // Display the default slider value
+
+  // Update the current slider value (each time you drag the slider handle)
+  slider.oninput = function() {
+    output.innerHTML = this.value;
+  }
+</script>
+{% endblock %}
