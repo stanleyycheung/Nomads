@@ -3,19 +3,22 @@
 {% block title %} Locations {% endblock %}
 
 {% block content %}
-<h1>Display the locations with some jinja</h1>
+<div class="container-fluid">
+  <h1>Our top 5 picks for you</h1>
+</div>
 
-<form>
+<form method="post">
+  {% csrf_token %}
   <div class="container-fluid thin center-text">
-    <h1>How much £</h1>
+    <h1>My budget is</h1>
   </div>
   <div class="slidecontainer thin center-text">
-    <input type="range" min="0" max="100" step="5" value="50" class="slider" id="myRange">
+    <input type="range" min="0" max="100" step="5" value="50" class="slider" id="myRange" name="bdg">
   </div>
 
   <div class="container center-text">
     <text>£</text>
-    <text id="demo"></text>
+    <text id="budget"></text>
   </div>
 
   <div class="container thin center-text">
@@ -35,20 +38,20 @@
     });
     </script>
   </div>
-
+  {% csrf_token %}
+  <div class="center-text">
+    <button type="submit" class="btn btn-primary center-text">Go!</button>
   </div>
 </form>
 
-<div class="center-text">
-  <button type="submit" class="btn btn-primary center-text">Go!</button>
-</div>
+
 
 {% endblock %}
 
 {% block scripts %}
 <script>
   var slider = document.getElementById("myRange");
-  var output = document.getElementById("demo");
+  var output = document.getElementById("budget");
   output.innerHTML = slider.value; // Display the default slider value
 
   // Update the current slider value (each time you drag the slider handle)
