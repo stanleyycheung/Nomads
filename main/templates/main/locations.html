@@ -7,12 +7,13 @@
   <h1>Our top 5 picks for you</h1>
 </div>
 
-<form>
+<form method="post">
+  {% csrf_token %}
   <div class="container-fluid thin center-text">
     <h1>My budget is</h1>
   </div>
   <div class="slidecontainer thin center-text">
-    <input type="range" min="0" max="100" step="5" value="50" class="slider" id="myRange">
+    <input type="range" min="0" max="100" step="5" value="50" class="slider" id="myRange" name="bdg">
   </div>
 
   <div class="container center-text">
@@ -37,13 +38,13 @@
     });
     </script>
   </div>
-
+  {% csrf_token %}
+  <div class="center-text">
+    <button type="submit" class="btn btn-primary center-text">Go!</button>
   </div>
 </form>
 
-<div class="center-text">
-  <button type="submit" class="btn btn-primary center-text">Go!</button>
-</div>
+
 
 {% endblock %}
 

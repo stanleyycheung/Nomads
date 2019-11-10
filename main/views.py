@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from urllib.parse import urlencode
 
+from main.personality import get_location
+
 from .models import Personality, TripCategories
 
 # Create your views here.
@@ -27,17 +29,28 @@ def main(request):
 
 def locations(request):
 
-    print(request.session['location'] + " is home city")
-    print(request.session['personalities'])
+    if request.method == "GET":
 
-    
-    return render(request, 'main/locations.html')
+        print(request.session['location'] + " is home city")
+        print(request.session['personalities'])
 
-def categories(request, user_id):
-    response = "You are looking at %s Category."
-    return HttpResponse(response % user_id)
+        get_location(request.session['personalities'])
+
+        request.session['destinations'] = ['LON', 'JPN', 'HKG']
+        return render(request, 'main/locations.html')
+
+    elif request.method == "POST":
+
+        budget = request.POST['bdg']
+        dates = request.POST['daterange']
+        # print(dates + '\n\n\n\n')
+
+        depDate = "{}-{}-{}".format(dates[6:10], dates[0:2], dates[3:5])
+        retDate = "{}-{}-{}".format(dates[-4:], dates[-10:-8], dates[-7:-5])
+
+        return render(request, 'main/locations.html')
 
 def results(request, user_id):
-    template = template.render('main/results.html')
 
-    return HttpResponse(template.render())
+    if request.method == "GET":
+        return HttpResponse(template.render())

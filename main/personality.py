@@ -1,44 +1,50 @@
 import csv
 
-location = ["Bangalore", "Barcelona", "Berlin", "Dallas",
-            "London", "New York", "Paris", "San Francisco"]
-tags = []
-for loc in location:
-    with open(f'csv/{loc}.csv', newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            tags.append(dict(row))
+def get_location(pType):
+    location = ["Bangalore", "Barcelona", "Berlin", "Dallas",
+                "London", "New York", "Paris", "San Francisco"]
+    tags = []
+    for loc in location:
+        with open(f'main/csv/{loc}.csv', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                print(row)
+                tags.append(row)
 
-with open('csv/tags.csv') as tagsfile:
-    first_line = tagsfile.readline()
-    keys = first_line.split(',')
-
-
-personalityType = ['Touristy', 'Shopaholic', 'Outdoor', 'Foodie', 'Chill/Fun', 'Everything']
-personalityTags = []
+    with open('main/csv/tags.csv') as tagsfile:
+        first_line = tagsfile.readline()
+        keys = first_line.split(',')
 
 
-with open('csv/personality.csv') as persfile:
-    csv_reader = csv.reader(persfile, delimiter=',')
-    for row in csv_reader:
-        personalityTags.append(row)
+    personalityType = ['Touristy', 'Shopaholic', 'Outdoor', 'Foodie', 'Chill/Fun', 'Everything']
+    personalityTags = []
 
-personality = dict(zip(personalityType, personalityTags))
-placesCounter = []
 
-personalityType = ['Touristy', 'Outdoor']
+    with open('main/csv/personality.csv') as persfile:
+        csv_reader = csv.reader(persfile, delimiter=',')
+        for row in csv_reader:
+            personalityTags.append(row)
 
-for dict in tags:
-    counter = 0
-    for key in dict:
-        for pT in personalityType:
-            for attribute in personality[pT]:
-                if key.strip() == attribute.strip():
-                    counter += int(dict[key])
-                # print(dict[key])
-    placesCounter.append(counter)
+    personality = zip(personalityType, personalityTags)
+    placesCounter = []
 
-result = list(zip(location, placesCounter))
-result = sorted(result, key=lambda x: x[1], reverse=True)
+    print(personality)
 
-print(result)
+    personalityType = pType
+
+    for s in tags:
+        counter = 0
+        for key in s:
+            for pT in personalityType:
+                for attribute in personality[pT]:
+                    if key.strip() == attribute.strip():
+                        counter += int(s[key])
+                    # print(dict[key])
+        placesCounter.append(counter)
+
+    result = list(zip(location, placesCounter))
+    result = sorted(result, key=lambda x: x[1], reverse=True)
+
+    print(result)
+
+get_location('Everything')
