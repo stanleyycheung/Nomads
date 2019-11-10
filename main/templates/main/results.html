@@ -4,5 +4,38 @@
 
 {% block content %}
 
+<table class="table hide">
+        <thead>
+        <tr>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Current Price</th>
+          <th scope="col">Total Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- info is a list with the 3 items as per above -->
+        {% for row in portfolio %}
+        <tr>
+          <td>{{ stock['symbol'] }}</td>
+          <td>{{ stock['SUM(shares)'] }}</td>
+          <td>{{ stock['price'] }}</td>
+          <td>{{ stock['total'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tr>
+        <td scope="row">Cash</td>
+        <td></td>
+        <td></td>
+        <td>{{ cash }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Account Value</th>
+        <td></td>
+        <td></td>
+        <td>{{ total }}</td>
+      </tr>
+    </table>
 
 {% endblock %}

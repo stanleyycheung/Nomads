@@ -103,14 +103,15 @@ def get_locations(pT):
     return final
 
 
-def parse_flights():
+def parse(org, dest, depDate):
     total_price = []
     deperature_time = []
     arrival_time = []
     travel_class = []
     carrier_code = []
     # print(get_locations('Everything'))
-    flightDict = get_flights()
+    flightDict = get_flights(org, dest, depDate)
+    # hotelDict = get_hotels()
     flightDF = pd.DataFrame(flightDict)
     # print(flightDF['offerItems'])
     for i in flightDF['offerItems']:
@@ -118,7 +119,6 @@ def parse_flights():
             total_price.append(j['price']['total'])
             for k in j['services']:
                 for l in k['segments']:
-                    print(l)
                     carrier_code.append(l['flightSegment']['carrierCode'])
                     deperature_time.append(l['flightSegment']['departure']['at'])
                     arrival_time.append(l['flightSegment']['arrival']['at'])
@@ -126,25 +126,10 @@ def parse_flights():
     return total_price, deperature_time, arrival_time, travel_class, carrier_code
 
 
-def parse_hotels():
-    hotelDict = get_hotels()
-    hotelDF = pd.DataFrame(hotelDict)
-    hotel_name = list(hotelDF['name'])
-    hotel_description = list(hotelDF['description'])
-    hotel_price = list(hotelDF['price'])
-    return hotel_name, hotel_description, hotel_price
-
-
 if __name__ == '__main__':
-    total_price, deperature_time, arrival_time, travel_class, carrier_code = parse_flights()
-    # print(total_price)
-    # print(deperature_time)
-    # print(arrival_time)
-    # print(travel_class)
-    # print(carrier_code)
-    rows = zip(total_price, deperature_time, arrival_time, travel_class, carrier_code)
-    print(list(rows))
-    # hotel_name, hotel_description, hotel_price = parse_hotels()
-    # print(hotel_name)
-    # print(hotel_description)
-    # print(hotel_price)
+    total_price, deperature_time, arrival_time, travel_class, carrier_code = parse()
+    print(total_price)
+    print(deperature_time)
+    print(arrival_time)
+    print(travel_class)
+    print(carrier_code)

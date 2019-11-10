@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from urllib.parse import urlencode
 
-from main.utils import get_locations, get_flights
+from main.utils import get_locations, get_flights, parse
 
 from .models import Personality, TripCategories
 
@@ -34,9 +34,8 @@ def locations(request):
         print(request.session['location'] + " is home city")
         print(request.session['personalities'])
 
-        get_locations(request.session['personalities'])
-
-        request.session['destinations'] = ['LON', 'JPN', 'HKG']
+        request.session['destinations'] = get_locations(request.session['personalities'])
+        print(request.session['destinations'])
         return render(request, 'main/locations.html')
 
     elif request.method == "POST":
@@ -48,9 +47,21 @@ def locations(request):
         depDate = "{}-{}-{}".format(dates[6:10], dates[0:2], dates[3:5])
         retDate = "{}-{}-{}".format(dates[-4:], dates[-10:-8], dates[-7:-5])
 
+        total_price, deperature_time, arrival_time, travel_class, carrier_code = parse(org=request.session['location']
+        , dest='LON', depDate=depDate)
+
+        request.session['total_price'] = total_price
+        request.session['departure_time'] = departure_time
+        request.session['arrival_time'] = arrival_time
+        request.session['travel_class'] = travel_class
+        request.session['carrier_code'] = carrier_code
+
         return render(request, 'main/locations.html')
 
 def results(request, user_id):
 
     if request.method == "GET":
+
+        rows = list(zip(request.session['total_price'], request.session['departure_time'], request.session['arrival_time'], request.session['travel_class'], request.session['carrier_code']))
+
         return HttpResponse(template.render())
