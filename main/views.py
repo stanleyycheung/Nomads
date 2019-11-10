@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from urllib.parse import urlencode
 
-from main.personality import get_location
+from main.utils import get_locations, get_flights
 
 from .models import Personality, TripCategories
 
@@ -34,7 +34,7 @@ def locations(request):
         print(request.session['location'] + " is home city")
         print(request.session['personalities'])
 
-        get_location(request.session['personalities'])
+        get_locations(request.session['personalities'])
 
         request.session['destinations'] = ['LON', 'JPN', 'HKG']
         return render(request, 'main/locations.html')
