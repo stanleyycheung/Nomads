@@ -28,8 +28,8 @@
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="Foodie" name="checks" id="5">
-          <label class="form-check-label" for="5">
+          <input class="form-check-input" type="checkbox" value="Foodie" name="checks" id="3">
+          <label class="form-check-label" for="3">
             Foodie
           </label>
         </div>
@@ -37,14 +37,14 @@
 
       <div class="col-sm-3">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="Touristy" name="checks" id="3">
-          <label class="form-check-label" for="3">
+          <input class="form-check-input" type="checkbox" value="Touristy" name="checks" id="4">
+          <label class="form-check-label" for="4">
             Touristy
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="Outdoor" name="checks" id="4">
-          <label class="form-check-label" for="4">
+          <input class="form-check-input" type="checkbox" value="Outdoor" name="checks" id="5">
+          <label class="form-check-label" for="5">
             Outdoor
           </label>
         </div>
@@ -65,7 +65,7 @@
 
     <div class="center-text">
       {% csrf_token %}
-      <button type="submit" class="btn btn-primary ">Take me somewhere</button>
+      <button onclick="validate()" type="submit" class="btn btn-primary text30" id="sub"> Take me somewhere </button>
     </div>
   </form>
 </div>
@@ -105,4 +105,5 @@
 {% endblock %}
 
 {% block script %}
+
 {% endblock %}
