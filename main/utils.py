@@ -1,39 +1,50 @@
 from amadeus import Client, ResponseError
 import csv
+import pandas as pd
+
 
 def get_flights(org='MAD', dest='NYC', depDate='2019-12-01'):
 
     # gets token from amadeus
     amadeus = Client(
-        client_id='79VCz0cHVOHif2MJGKf0sCPJAOc3XkVf',
-        client_secret='uom69Wke5CF4UfAC'
+        client_id='oG6iyYGg6Fs5rvaI2qwvxsW8VRfbEVAn',
+        client_secret='NNX4hiJfywq2P3Pp'
     )
-
 
     # flight information
     try:
-        result = amadeus.shopping.flight_offers.get(origin=org, destination=dest, departureDate=depDate).result
+        result = amadeus.shopping.flight_offers.get(
+            origin=org, destination=dest, departureDate=depDate).result
         flights = amadeus.shopping.flight_offers.prediction.post(result)
         flightList = []
         for newObj in flights.data:
             flightDict = {}
-            flightDict["flightStart"] = newObj.get("offerItems")[0].get("services")[0].get("segments")[0].get("flightSegment").get("departure").get("iataCode")
-            flightDict["flightEnd"] = newObj.get("offerItems")[0].get("services")[0].get("segments")[0].get("flightSegment").get("arrival").get("iataCode")
-            flightDict["flightCarrierCode"] = newObj.get("offerItems")[0].get("services")[0].get("segments")[0].get("flightSegment").get("carrierCode")
+            flightDict["flightStart"] = newObj.get("offerItems")[0].get("services")[0].get("segments")[
+                0].get("flightSegment").get("departure").get("iataCode")
+            flightDict["flightEnd"] = newObj.get("offerItems")[0].get("services")[0].get("segments")[
+                0].get("flightSegment").get("arrival").get("iataCode")
+            flightDict["flightCarrierCode"] = newObj.get("offerItems")[0].get("services")[0].get("segments")[
+                0].get("flightSegment").get("carrierCode")
             fair = newObj.get("offerItems")[0].get("pricePerAdult").get("total")
             tax = newObj.get("offerItems")[0].get("pricePerAdult").get("totalTaxes")
             flightDict["totalFare"] = float(fair) + float(tax)
             flightList.append(flightDict)
-        print(flights.data)
+        return flights.data
     except ResponseError as e:
-        print(e)
+        return e
 
 
+def get_hotels(org='MAD', dest='NYC', depDate='2019-12-01'):
+    amadeus = Client(
+        client_id='79VCz0cHVOHif2MJGKf0sCPJAOc3XkVf',
+        client_secret='uom69Wke5CF4UfAC'
+    )
     # hotel information
     hotelRadius = 5
     radUnit = 'KM'
     try:
-        hotels = amadeus.get('/v2/shopping/hotel-offers',cityCode=dest,radius=hotelRadius,radiusUnit=radUnit)
+        hotels = amadeus.get('/v2/shopping/hotel-offers', cityCode=dest,
+                             radius=hotelRadius, radiusUnit=radUnit)
         hotelList = []
         for newObj in hotels.data:
             hotelDict = {}
@@ -44,10 +55,10 @@ def get_flights(org='MAD', dest='NYC', depDate='2019-12-01'):
                 hotelDict["description"] = newObj.get("hotel").get("description").get("text")
             hotelDict["price"] = newObj.get("offers")[0].get("price").get("total")
             hotelList.append(hotelDict)
-        print(hotelList)
+        return hotelList
+    except ResponseError as e:
+        return e
 
-    except ResponseError as error:
-        print(error)
 
 def get_locations(pT):
     location = ["Bangalore", "Barcelona", "Berlin", "Dallas",
@@ -92,5 +103,48 @@ def get_locations(pT):
     return final
 
 
+def parse_flights():
+    total_price = []
+    deperature_time = []
+    arrival_time = []
+    travel_class = []
+    carrier_code = []
+    # print(get_locations('Everything'))
+    flightDict = get_flights()
+    flightDF = pd.DataFrame(flightDict)
+    # print(flightDF['offerItems'])
+    for i in flightDF['offerItems']:
+        for j in i:
+            total_price.append(j['price']['total'])
+            for k in j['services']:
+                for l in k['segments']:
+                    print(l)
+                    carrier_code.append(l['flightSegment']['carrierCode'])
+                    deperature_time.append(l['flightSegment']['departure']['at'])
+                    arrival_time.append(l['flightSegment']['arrival']['at'])
+                    travel_class.append(l['pricingDetailPerAdult']['travelClass'])
+    return total_price, deperature_time, arrival_time, travel_class, carrier_code
+
+
+def parse_hotels():
+    hotelDict = get_hotels()
+    hotelDF = pd.DataFrame(hotelDict)
+    hotel_name = list(hotelDF['name'])
+    hotel_description = list(hotelDF['description'])
+    hotel_price = list(hotelDF['price'])
+    return hotel_name, hotel_description, hotel_price
+
+
 if __name__ == '__main__':
-    print(get_locations('Everything'))
+    total_price, deperature_time, arrival_time, travel_class, carrier_code = parse_flights()
+    # print(total_price)
+    # print(deperature_time)
+    # print(arrival_time)
+    # print(travel_class)
+    # print(carrier_code)
+    rows = zip(total_price, deperature_time, arrival_time, travel_class, carrier_code)
+    print(list(rows))
+    # hotel_name, hotel_description, hotel_price = parse_hotels()
+    # print(hotel_name)
+    # print(hotel_description)
+    # print(hotel_price)
